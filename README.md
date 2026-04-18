@@ -1,4 +1,4 @@
-# ed-mac
+# ED Mac Silicon
 
 Reproducible, scriptable setup for **Elite Dangerous** on Apple Silicon, using Homebrew, Wine, and Apple's Game Porting Toolkit (GPTK / D3DMetal). No CrossOver, no Whisky, no GUI wrappers. Every step is a shell script you can read, diff, and re-run.
 
@@ -187,7 +187,7 @@ A trap that cost me hours: min-ed-launcher ignores `settings.json` next to `MinE
 ### Layout
 
 ```
-ed-mac/
+ed-mac-silicon/
 |-- README.md
 |-- .gitignore
 |-- .shellcheckrc
