@@ -1,0 +1,3 @@
+# Resolve `source scripts/_common.sh` for shellcheck.
+external-sources=true
+source-path=SCRIPTDIR

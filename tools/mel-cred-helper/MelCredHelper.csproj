@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <RootNamespace>MelCredHelper</RootNamespace>
+    <AssemblyName>MelCredHelper</AssemblyName>
+    <Nullable>disable</Nullable>
+    <!-- Single-file self-contained publish so the user doesn't need
+         .NET installed inside the Wine prefix. -->
+    <PublishSingleFile>true</PublishSingleFile>
+    <SelfContained>true</SelfContained>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+    <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- ProtectedData isn't in the base net8.0 surface for non-Windows
+         runtimes but IS available via the OS-conditional package. Under
+         Wine the Windows runtime path is used. -->
+    <PackageReference Include="System.Security.Cryptography.ProtectedData" Version="8.0.0" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,22 @@
+{
+  "apiUri": "https://api.zaonce.net",
+  "watchForCrashes": true,
+  "gameLocation": null,
+  "language": "en",
+  "autoUpdate": true,
+  "autoRun": true,
+  "autoQuit": true,
+  "checkForLauncherUpdates": false,
+  "preferredLanguage": null,
+  "shutdownTimeout": 3,
+  "shutdownDelay": 0,
+  "filterOverrides": [],
+  "additionalProducts": [],
+  "cobraBayLauncherDir": null,
+  "processes": [
+    {
+      "fileName": "EliteDangerous64.exe",
+      "arguments": "/EDH /EDO"
+    }
+  ]
+}

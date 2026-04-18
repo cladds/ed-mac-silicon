@@ -1,0 +1,46 @@
+# Never commit credentials or secrets.
+*.env.local
+*.secret
+*.key
+credentials.json
+
+# Prefix contents and game files must never be tracked.
+prefixes/
+games/
+**/drive_c/
+
+# Setup state lives outside the repo, but ignore any local mirror just in case.
+.ed-mac-setup/
+sentinels/
+logs/
+
+# macOS noise.
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon?
+._*
+
+# Editor noise.
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# .NET build output for the credential helper.
+tools/mel-cred-helper/bin/
+tools/mel-cred-helper/obj/
+
+# Never commit Frontier credentials files (belt + braces - they live outside
+# the repo already, but in case anyone ever drops one in for testing).
+*.cred
+
+# Personal scratch area - see local/README.md. Everything here is ignored
+# except the README so git still tracks that the folder exists.
+local/*
+!local/README.md
+
+# Local overrides of templates: copy ed-launch.env to ed-launch.local.env to override.
+config/*.local.env
+config/*.local.json
