@@ -95,7 +95,15 @@ Downloads the latest [min-ed-launcher](https://github.com/rfvgyhn/min-ed-launche
 
 Compiles `tools/mel-cred-helper/` to a self-contained Windows x64 single-file exe. You only run this once (or again when the helper source changes). The output lands at `tools/mel-cred-helper/bin/publish/MelCredHelper.exe` and is ignored by git.
 
-### 7. Seed your Frontier credentials
+### 7. Import macOS's root CAs into the Wine prefix
+
+```bash
+./scripts/import-ca-roots.sh
+```
+
+Wine's schannel has no trusted root certificates by default, so every HTTPS call from min-ed-launcher fails with a fatal TLS error (`0x80131506`) at the "Checking for updates" step. This script reads `/etc/ssl/cert.pem` (Apple's bundled ~128 root CAs), re-encodes each one in the Windows registry "Blob" format schannel expects, and imports the lot via `wine reg import`. Run it once; registry state persists across launches.
+
+### 8. Seed your Frontier credentials
 
 ```bash
 ./scripts/04b-setup-frontier-creds.sh
@@ -105,7 +113,7 @@ Prompts for your Frontier email and password. Both are passed to the helper, whi
 
 On the first interactive launch after this, Frontier will email you a 2FA verification code for this "new device". Type it blind at the prompt (Wine does not echo characters, but it does accept them). After that one success, the launcher appends a machine token to the `.cred` file and 2FA is done forever for this install.
 
-### 8. Install the double-click launcher
+### 9. Install the double-click launcher
 
 ```bash
 ./scripts/install-app-launcher.sh
@@ -113,7 +121,7 @@ On the first interactive launch after this, Frontier will email you a 2FA verifi
 
 Drops `Elite Dangerous.command` into `~/Applications`. Double-click it from Finder and ED boots. Under the hood it just calls `./scripts/launch-ed.sh`.
 
-### 9. Launch
+### 10. Launch
 
 Either double-click the .command file, or from a terminal:
 
@@ -127,7 +135,7 @@ Flags:
 - `--no-caffeinate` lets the Mac sleep while ED is running (default is to prevent sleep)
 - `--profile NAME` uses a different Frontier credential profile (default is `default`). Useful if you have multiple Frontier accounts.
 
-### 10. (Optional) Companion tools
+### 11. (Optional) Companion tools
 
 ```bash
 ./scripts/05-create-tools-prefix.sh
@@ -204,6 +212,7 @@ ed-mac-silicon/
 |   |-- 04-install-launcher.sh   # min-ed-launcher install + settings.json
 |   |-- 04b-setup-frontier-creds.sh     # one-time credential seed
 |   |-- 05-create-tools-prefix.sh       # second prefix for EDDiscovery etc.
+|   |-- import-ca-roots.sh       # import macOS root CAs into Wine registry
 |   |-- build-cred-helper.sh     # compile MelCredHelper.exe
 |   |-- install-app-launcher.sh  # drop Elite Dangerous.command into ~/Applications
 |   |-- launch-ed.sh             # day-to-day launcher
@@ -234,7 +243,7 @@ These are quirks of running ED via Wine + GPTK on macOS, not bugs in this repo.
 
 ## Troubleshooting
 
-**`0x80131506` fatal error during launcher's "Checking for updates".** TLS handshake failing. Check `/etc/ssl/cert.pem` exists and `launch-ed.sh` is setting `SSL_CERT_FILE` (see the top of the script).
+**`0x80131506` fatal error during launcher's "Checking for updates".** Wine schannel has no root CAs. Run `./scripts/import-ca-roots.sh`. The env-var fallback in `launch-ed.sh` (`SSL_CERT_FILE`) is unreliable; the registry import is the definitive fix.
 
 **`rosetta error: unexpectedly need to EmulateForward`.** Hardware intrinsics not being disabled. Check `DOTNET_EnableHWIntrinsic=0` is exported in `launch-ed.sh`. Also run `softwareupdate --install-rosetta --agree-to-license` to pick up the latest Rosetta.
 
